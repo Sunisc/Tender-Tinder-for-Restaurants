@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang=”en”>
+ <head>
+  <meta charset=”UTF-8">
+  <meta name=”viewport” content=”width=device-width, initial-scale=1.0">
+  <meta http-equiv=”X-UA-Compatible” content=”ie=edge”>
+  <title>Tender: Tinder Restraunts Edition </title>
+
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      h1 {
+          size: 40px;
+          text-align: center;
+      }
+      #map {
+        height: 50%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+  padding: 2px 16px;
+}
+    </style>
+
+ </head>
+ <body>
+
+
+  <h1>TENDER: Tinder Restraunts Edition</h1>
+  <div id = "map"></div>
+  <h2> Restraunts near  you based on preferences</h2>
+
+  <div class="card">
+        <div class="container">
+          <h4><b>Taco Bell</b></h4>
+          <p>Fast Food</p>
+        </div>
+      </div>
+ <div class="card">
+            <div class="container">
+              <h4><b>Chipotle Doe</b></h4>
+              <p>Burritos</p>
+            </div>
+          </div>
+          <div class="card">
+                <div class="container">
+                  <h4><b>Burger King</b></h4>
+                  <p>Fast Food</p>
+                </div>
+              </div>   
+  <script>
+        var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 8
+        });
+      }
+
+    </script> 
+    <script src="https://maps.googleapis.com/maps/api/js?key=
+    AIzaSyDfSmOgIKjOrTZCgniKKg83zEC9tYTH7vo
+    &callback=initMap" ></script>
+
+ </body>
+</html>
