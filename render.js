@@ -7,6 +7,9 @@ $(function () {
 
 let userLatitude = null;
 let userLongitude = null;
+
+let foodCategoryToSearch="mexican,burgers"
+
 const clientID = `jxpavrW-66I3Obpstl8qYA`;
 const apiKey=`pm8o9ejAV8iA0lnYN8fK4lEKdh6nVH3foW1CB76vo0kVN9IK6dqv6awLhlVSWpm81FeaXAgGyEOnycrvc6HdXlPtbcQv7vC1wvOjkJ4Ei7LLrhvH-K3xQHtxafbWXXYx`;
 
@@ -26,7 +29,7 @@ export async function renderOneRestaurant() {
     // params.append('latitude', userLatitude)
     // params.append('longitude', userLongitude)
     $root.append(`<p>Longitude: ${userLongitude}, Latitude: ${userLatitude}</p>`)
-    fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude=${userLatitude}&longitude=${userLongitude}&categories=mexican,burgers`, {
+    fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude=${userLatitude}&longitude=${userLongitude}&categories=${foodCategoryToSearch}`, {
         headers: {'Authorization': 'Bearer '+ apiKey},
     })
         .then(res => res.json().then(renderHelper));
