@@ -36,6 +36,7 @@ export async function renderOneRestaurant() {
   export async function renderHelper(queryResult) {
     let result = queryResult['businesses']
     console.log(result[0])
+    console.log(result[0]['img_url'])
     const $root = $('#root');
     for (let each in result) {    
         let categories = result[each]['categories']
@@ -45,7 +46,7 @@ export async function renderOneRestaurant() {
         }
         $root.append(`
             <h2 class="subtitle">${result[each]['name']}</h2>
-            <img src=${result[each]['img_url']}>
+            <img src=${result[each]['image_url']} style="height:200px">
             <p>Phone Number: ${result[each]['phone']}</p>
             <p>Food categories: ${categoryString}</p>
             <br>
