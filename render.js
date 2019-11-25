@@ -16,12 +16,53 @@ const apiKey=`pm8o9ejAV8iA0lnYN8fK4lEKdh6nVH3foW1CB76vo0kVN9IK6dqv6awLhlVSWpm81F
 export async function renderSite() {
     const $root = $('#root')
     
-    navigator.geolocation.getCurrentPosition(setPosition); //the rendering of the page currently only happens after the location is found
 
+    navigator.geolocation.getCurrentPosition(setPosition); //the rendering of the page currently only happens after the location is found
+    
     document.getElementById("retryButton").addEventListener("click", function(event) { //button currently does not function
         handleRetry()
     })
 }
+
+export async function searchYelp(latitude, longitude, categories, radius, searchTerm, needsCorsAnywhere) {
+    let yelpKey=`pm8o9ejAV8iA0lnYN8fK4lEKdh6nVH3foW1CB76vo0kVN9IK6dqv6awLhlVSWpm81FeaXAgGyEOnycrvc6HdXlPtbcQv7vC1wvOjkJ4Ei7LLrhvH-K3xQHtxafbWXXYx`; //our yelp api key
+    let finalResult
+    if (latitude==undefined || longitude==undefined) {
+        return null;
+    }
+    let searchURL=""
+    if (needsCorsAnywhere==undefined || needsCorsAnywhere==false || needsCorsAnywhere==null) { //decides on base URL, whether we need cors-anywhere or not.
+        searchURL=searchURL+"https://api.yelp.com/v3/businesses/search?"
+    } else {
+        searchURL=searchURL+"https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?"
+    }
+    searchURL=searchURL+`latitude=${latitude}&longitude=${longitude}`
+    if (categories!=undefined&&categories!=null) {
+        searchURL=searchURL+`&categories=${categories}` //appends categories
+    }
+    if (radius!=null&&radius!=undefined) {
+        searchURL=searchURL+`&radius=${radius}` //appends radius
+    }
+    if (searchTerm!=null&&searchTerm!=undefined) {
+        searchURL=searchURL+`&term=${searchTerm}` //appends searchTerm
+    }
+    //console.log(searchURL)
+
+    await makeRequest() //makes function wait until end of request
+    async function makeRequest() {
+        await fetch(`${searchURL}`, {
+            headers: {'Authorization': 'Bearer '+ yelpKey},
+        })
+            .then(res => res.json().then(setFin))
+    }
+    async function setFin(query) {
+        finalResult = query['businesses']
+    }
+    return finalResult
+    
+    
+}
+
 
 export async function renderOneRestaurant() { //no longer only renders one restaurant. should probably be renamed. too lazy to do that rn
     const $root = $('#root');
@@ -31,12 +72,9 @@ export async function renderOneRestaurant() { //no longer only renders one resta
     })
         .then(res => res.json().then(renderHelper));
     // above code fetches the information, then runs the renderHelper function.    
-  }
+}
 
-  export async function renderHelper(queryResult) {
-    let result = queryResult['businesses']
-    console.log(result)
-    console.log(result[0]['img_url'])
+export async function renderHelper(result) {
     const $root = $('#root');
     for (let each in result) {    
         let categories = result[each]['categories']
@@ -52,12 +90,15 @@ export async function renderOneRestaurant() { //no longer only renders one resta
             <br>
         `)
     }
-    // console.log(queryResult.then())
-  }
+}
 
-async function setPosition(position) { //this function kicks everything off after the location of the user is found. could probably be tidied up
-    console.log(position.coords.longitude)
+export async function setPosition(position) { //this function kicks everything off after the location of the user is found. could probably be tidied up
+    //console.log(position.coords.longitude)
     userLongitude=position.coords.longitude
     userLatitude=position.coords.latitude
-    renderOneRestaurant();
+    //console.log(userLatitude)
+    let restaurants = await searchYelp(userLatitude, userLongitude, foodCategoryToSearch, null, null, true)
+    console.log(restaurants)
+    renderHelper(restaurants)
+    //renderOneRestaurant();
 }
