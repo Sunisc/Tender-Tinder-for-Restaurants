@@ -1,6 +1,5 @@
 Extracted from: https://www.yelp.com/developers/documentation/v3/all_category_list
 
-
 Restaurants (restaurants, All)
 Afghan (afghani, [AR, AT, AU, BE, BR, CA, CH, CL, CZ, DE, DK, ES, FI, FR, GB, HK, IE, IT, JP, MY, NL, NO, NZ, PH, PL, PT, SE, SG, TW, US])
 African (african, [AR, AT, AU, BE, BR, CA, CH, CL, CZ, DE, DK, ES, FI, FR, GB, HK, IE, IT, JP, MX, MY, NL, NO, NZ, PH, PL, PT, SE, SG, TW, US])

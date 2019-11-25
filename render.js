@@ -26,7 +26,7 @@ export async function renderOneRestaurant() {
     // params.append('latitude', userLatitude)
     // params.append('longitude', userLongitude)
     $root.append(`<p>Longitude: ${userLongitude}, Latitude: ${userLatitude}</p>`)
-    fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude=${userLatitude}&longitude=${userLongitude}&categories=burgers`, {
+    fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude=${userLatitude}&longitude=${userLongitude}&categories=mexican,burgers`, {
         headers: {'Authorization': 'Bearer '+ apiKey},
     })
         .then(res => res.json().then(renderHelper));
