@@ -34,8 +34,9 @@ export async function renderOneRestaurant() {
     const result = await axios({
         method: 'get',
         url: 'https://api.yelp.com/v3/businesses/search',
-        withCredentials: true,
-        
+        headers: {
+            Authorization: `Bearer ${apiKey}`,
+        }
     })
     console.log(result)
         
