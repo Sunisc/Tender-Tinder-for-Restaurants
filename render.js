@@ -26,7 +26,7 @@ export async function renderOneRestaurant() {
     // params.append('latitude', userLatitude)
     // params.append('longitude', userLongitude)
     $root.append(`<p>Longitude: ${userLongitude}, Latitude: ${userLatitude}</p>`)
-    fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude=${userLatitude}&longitude=${userLongitude}`, {
+    fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude=${userLatitude}&longitude=${userLongitude}&categories=burgers`, {
         headers: {'Authorization': 'Bearer '+ apiKey},
     })
         .then(res => res.json().then(renderHelper));
@@ -35,7 +35,7 @@ export async function renderOneRestaurant() {
 
   export async function renderHelper(queryResult) {
     let result = queryResult['businesses']
-    console.log(result[0])
+    console.log(result)
     console.log(result[0]['img_url'])
     const $root = $('#root');
     for (let each in result) {    
