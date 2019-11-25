@@ -1,0 +1,21 @@
+{
+  "name": "tender",
+  "version": "1.0.0",
+  "description": "Connecting restaurants with clients efficiently. Our aim is to use existing restaurant API's and efficient algorithms\r to enable users to connect with the restaurants of their choice.",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sunisc/Tender-Tinder-for-Restaurants.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sunisc/Tender-Tinder-for-Restaurants/issues"
+  },
+  "homepage": "https://github.com/Sunisc/Tender-Tinder-for-Restaurants#readme"
+}
