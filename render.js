@@ -22,14 +22,19 @@ export async function renderSite() {
 
 export async function renderOneRestaurant() {
     const $root = $('#root');
-    const params = new URLSearchParams();
-    params.append('latitude', userLatitude)
-    params.append('longitude', userLongitude)
+    // const params = new URLSearchParams();
+    // params.append('latitude', userLatitude)
+    // params.append('longitude', userLongitude)
     $root.append(`<p>Longitude: ${userLongitude}, Latitude: ${userLatitude}</p>`)
     fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude=${userLatitude}&longitude=${userLongitude}`, {
         headers: {'Authorization': 'Bearer '+ apiKey},
-    });
+    })
+        .then(res => renderHelper(res.json()));
     
+  }
+
+  export async function renderHelper(queryResult) {
+      console.log(queryResult)
   }
 
 async function setPosition(position) {
