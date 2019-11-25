@@ -28,6 +28,20 @@ export async function renderOneRestaurant() {
     $root.append(`<p>Longitude: ${userLongitude}, Latitude: ${userLatitude}</p>`)
     fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude=${userLatitude}&longitude=${userLongitude}`, {
         headers: {'Authorization': 'Bearer '+ apiKey},
+    });
+    // fetch('https://api.yelp.com/v3/businesses/search', {
+    //     method: 'GET', headers: {Authorization: apiKey, 'Access-Control-Allow-Origin':false}
+    // })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         console.log(data)
+    //     })
+    const result = await axios({
+        method: 'get',
+        url: 'https://api.yelp.com/v3/businesses/search',
+        headers: {
+            Authorization: `Bearer ${apiKey}`,
+        }
     })
         .then(response => response.json())
         .then(data => {
