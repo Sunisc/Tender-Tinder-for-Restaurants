@@ -24,54 +24,55 @@ export async function renderSite() {
     })
 }
 
+
+/**
+* Searches Yelp API using our API key
+* 
+* @param {number} latitude latitude of position about which to search (required)
+* @param {number} longitude longitude of position about which to search (required)
+* @param {string} categories comma delimited string of categories to include in search (optional)
+* @param {number} radius maximum radius about position to search (optional)
+* @param {string} searchTerm term with which to search Yelp, as if in yelp's search bar (optional)
+* @param {boolean} needsCorsAnywhere boolean governing the use of cors-anywhere, cors-anywhere is enabled when true (optional)
+*
+*
+*/
 export async function searchYelp(latitude, longitude, categories, radius, searchTerm, needsCorsAnywhere) {
+    
     let yelpKey=`pm8o9ejAV8iA0lnYN8fK4lEKdh6nVH3foW1CB76vo0kVN9IK6dqv6awLhlVSWpm81FeaXAgGyEOnycrvc6HdXlPtbcQv7vC1wvOjkJ4Ei7LLrhvH-K3xQHtxafbWXXYx`; //our yelp api key
     let finalResult
+
     if (latitude==undefined || longitude==undefined) {
         return null;
     }
-    let searchURL=""
-    if (needsCorsAnywhere==undefined || needsCorsAnywhere==false || needsCorsAnywhere==null) { //decides on base URL, whether we need cors-anywhere or not.
+    let searchURL="" //intially empty URL
+    if (needsCorsAnywhere==undefined || needsCorsAnywhere==false || needsCorsAnywhere==null) { //decides on base URL, whether we need cors-anywhere or not. appends accordingly
         searchURL=searchURL+"https://api.yelp.com/v3/businesses/search?"
     } else {
         searchURL=searchURL+"https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?"
     }
     searchURL=searchURL+`latitude=${latitude}&longitude=${longitude}`
     if (categories!=undefined&&categories!=null) {
-        searchURL=searchURL+`&categories=${categories}` //appends categories
+        searchURL=searchURL+`&categories=${categories}` //appends optional categories
     }
     if (radius!=null&&radius!=undefined) {
-        searchURL=searchURL+`&radius=${radius}` //appends radius
+        searchURL=searchURL+`&radius=${radius}` //appends optional radius
     }
     if (searchTerm!=null&&searchTerm!=undefined) {
-        searchURL=searchURL+`&term=${searchTerm}` //appends searchTerm
+        searchURL=searchURL+`&term=${searchTerm}` //appends optional searchTerm
     }
-    //console.log(searchURL)
 
     await makeRequest() //makes function wait until end of request
-    async function makeRequest() {
+    async function makeRequest() { //actually makes request
         await fetch(`${searchURL}`, {
             headers: {'Authorization': 'Bearer '+ yelpKey},
         })
             .then(res => res.json().then(setFin))
     }
-    async function setFin(query) {
+    async function setFin(query) { //sets finalResult after the request returns
         finalResult = query['businesses']
     }
-    return finalResult
-    
-    
-}
-
-
-export async function renderOneRestaurant() { //no longer only renders one restaurant. should probably be renamed. too lazy to do that rn
-    const $root = $('#root');
-    $root.append(`<p>Longitude: ${userLongitude}, Latitude: ${userLatitude}</p>`) //proof of concept location finder
-    fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude=${userLatitude}&longitude=${userLongitude}&categories=${foodCategoryToSearch}`, {
-        headers: {'Authorization': 'Bearer '+ apiKey},
-    })
-        .then(res => res.json().then(renderHelper));
-    // above code fetches the information, then runs the renderHelper function.    
+    return finalResult    
 }
 
 export async function renderHelper(result) {
