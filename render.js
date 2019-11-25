@@ -29,12 +29,29 @@ export async function renderOneRestaurant() {
     fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?latitude=${userLatitude}&longitude=${userLongitude}`, {
         headers: {'Authorization': 'Bearer '+ apiKey},
     })
-        .then(res => renderHelper(res.json()));
+        .then(res => res.json().then(renderHelper));
     
   }
 
   export async function renderHelper(queryResult) {
-      console.log(queryResult)
+    let result = queryResult['businesses']
+    console.log(result[0])
+    const $root = $('#root');
+    for (let each in result) {    
+        let categories = result[each]['categories']
+        let categoryString = ""
+        for (let category in categories) {
+            categoryString=categoryString+categories[category]['title']+", "
+        }
+        $root.append(`
+            <h2 class="subtitle">${result[each]['name']}</h2>
+            <img src=${result[each]['img_url']}>
+            <p>Phone Number: ${result[each]['phone']}</p>
+            <p>Food categories: ${categoryString}</p>
+            <br>
+        `)
+    }
+    // console.log(queryResult.then())
   }
 
 async function setPosition(position) {
