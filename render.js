@@ -28,8 +28,8 @@ export async function renderSite() {
 /**
 * Searches Yelp API using our API key, returning a promise which upon success is resolved into an array of restaurants.
 * 
-* @param {number} latitude latitude of position about which to search (required)
-* @param {number} longitude longitude of position about which to search (required)
+* @param {number} latitude latitude of position about which to search (required) returns null when undefined
+* @param {number} longitude longitude of position about which to search (required) returns null when undefined
 * @param {string} categories comma delimited string of categories to include in search (optional)
 * @param {number} radius maximum radius about position to search (optional)
 * @param {string} searchTerm term with which to search Yelp, as if in yelp's search bar (optional)
@@ -39,7 +39,7 @@ export async function renderSite() {
 *
 *
 */
-export async function searchYelp(latitude, longitude, categories, radius, searchTerm, offset, limit, needsCorsAnywhere) {
+export async function searchYelp(latitude, longitude, categories="", radius="", searchTerm="", offset="", limit="", needsCorsAnywhere) {
     
     let yelpKey=`pm8o9ejAV8iA0lnYN8fK4lEKdh6nVH3foW1CB76vo0kVN9IK6dqv6awLhlVSWpm81FeaXAgGyEOnycrvc6HdXlPtbcQv7vC1wvOjkJ4Ei7LLrhvH-K3xQHtxafbWXXYx`; //our yelp api key
     let finalResult
@@ -53,22 +53,8 @@ export async function searchYelp(latitude, longitude, categories, radius, search
     } else {
         searchURL=searchURL+"https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?"
     }
-    searchURL=searchURL+`latitude=${latitude}&longitude=${longitude}`
-    if (categories!=undefined&&categories!=null) {
-        searchURL=searchURL+`&categories=${categories}` //appends optional categories
-    }
-    if (radius!=null&&radius!=undefined) {
-        searchURL=searchURL+`&radius=${radius}` //appends optional radius
-    }
-    if (searchTerm!=null&&searchTerm!=undefined) {
-        searchURL=searchURL+`&term=${searchTerm}` //appends optional searchTerm
-    }
-    if (offset!=null&&offset!=undefined) {
-        searchURL=searchURL+`&offset=${offset}` //appends optional offset
-    }
-    if (limit!=null&&limit!=undefined) {
-        searchURL=searchURL+`&limit=${limit}` //appends optional limit
-    }
+    
+    searchURL=searchURL+`latitude=${latitude}&longitude=${longitude}&categories=${categories}&radius=${radius}&term=${searchTerm}&offset=${offset}&limit=${limit}` //appends everything.
 
     await makeRequest() //makes function wait until end of request
     async function makeRequest() { //actually makes request
@@ -106,7 +92,7 @@ export async function setPosition(position) { //this function kicks everything o
     userLongitude=position.coords.longitude
     userLatitude=position.coords.latitude
     //console.log(userLatitude)
-    let restaurants = await searchYelp(userLatitude, userLongitude, foodCategoryToSearch, null, null, null, null, true)
+    let restaurants = await searchYelp(userLatitude, userLongitude, foodCategoryToSearch, "", "", "", "", true)
     console.log(restaurants)
     renderHelper(restaurants)
     //renderOneRestaurant();
