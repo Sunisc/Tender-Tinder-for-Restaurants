@@ -33,11 +33,13 @@ export async function renderSite() {
 * @param {string} categories comma delimited string of categories to include in search (optional)
 * @param {number} radius maximum radius about position to search (optional)
 * @param {string} searchTerm term with which to search Yelp, as if in yelp's search bar (optional)
+* @param {number} offset term with which to retrieve results other than the top results. offset of 20 would return results 21-40. (optional)
+* @param {number} limit term with which to increase number of search results, default to 20 (optional)
 * @param {boolean} needsCorsAnywhere boolean governing the use of cors-anywhere, cors-anywhere is enabled when true (optional)
 *
 *
 */
-export async function searchYelp(latitude, longitude, categories, radius, searchTerm, needsCorsAnywhere) {
+export async function searchYelp(latitude, longitude, categories, radius, searchTerm, offset, limit, needsCorsAnywhere) {
     
     let yelpKey=`pm8o9ejAV8iA0lnYN8fK4lEKdh6nVH3foW1CB76vo0kVN9IK6dqv6awLhlVSWpm81FeaXAgGyEOnycrvc6HdXlPtbcQv7vC1wvOjkJ4Ei7LLrhvH-K3xQHtxafbWXXYx`; //our yelp api key
     let finalResult
@@ -60,6 +62,12 @@ export async function searchYelp(latitude, longitude, categories, radius, search
     }
     if (searchTerm!=null&&searchTerm!=undefined) {
         searchURL=searchURL+`&term=${searchTerm}` //appends optional searchTerm
+    }
+    if (offset!=null&&offset!=undefined) {
+        searchURL=searchURL+`&offset=${offset}` //appends optional offset
+    }
+    if (limit!=null&&limit!=undefined) {
+        searchURL=searchURL+`&limit=${limit}` //appends optional limit
     }
 
     await makeRequest() //makes function wait until end of request
@@ -98,7 +106,7 @@ export async function setPosition(position) { //this function kicks everything o
     userLongitude=position.coords.longitude
     userLatitude=position.coords.latitude
     //console.log(userLatitude)
-    let restaurants = await searchYelp(userLatitude, userLongitude, foodCategoryToSearch, null, null, true)
+    let restaurants = await searchYelp(userLatitude, userLongitude, foodCategoryToSearch, null, null, null, null, true)
     console.log(restaurants)
     renderHelper(restaurants)
     //renderOneRestaurant();
