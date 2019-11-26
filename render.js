@@ -26,7 +26,7 @@ export async function renderSite() {
 
 
 /**
-* Searches Yelp API using our API key
+* Searches Yelp API using our API key, returning a promise which upon success is resolved into an array of restaurants.
 * 
 * @param {number} latitude latitude of position about which to search (required)
 * @param {number} longitude longitude of position about which to search (required)
