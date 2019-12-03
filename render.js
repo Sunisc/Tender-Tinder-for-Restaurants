@@ -72,7 +72,16 @@ export async function searchYelp(latitude, longitude, categories="", radius="", 
 
 
 
-
+/**
+* Searches Yelp API for autocomplete suggestions, returns an object containing suggestions for business titles, key words, and categories.
+* 
+* @param {string} text text to be completed by the autocomplete request, probably the contents of a search bar.
+* @param {number} latitude latitude of position about which to search (required) returns null when undefined
+* @param {number} longitude longitude of position about which to search (required) returns null when undefined
+* @param {boolean} needsCorsAnywhere boolean governing the use of cors-anywhere, cors-anywhere is enabled when true (optional)
+*
+*
+*/
 export async function yelpAutocomplete(text, latitude, longitude, needsCorsAnywhere) {
 
     let yelpKey=`pm8o9ejAV8iA0lnYN8fK4lEKdh6nVH3foW1CB76vo0kVN9IK6dqv6awLhlVSWpm81FeaXAgGyEOnycrvc6HdXlPtbcQv7vC1wvOjkJ4Ei7LLrhvH-K3xQHtxafbWXXYx`; //our yelp api key
