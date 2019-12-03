@@ -112,6 +112,40 @@ export async function yelpAutocomplete(text, latitude, longitude, needsCorsAnywh
     return finalResult    
 }
 
+/**
+* Searches Yelp API details on a business, given its business id.
+* 
+* @param {string} id business id to be searched
+* @returns {Object} business details. see Yelp API or console.log for more info
+*
+*/
+export async function yelpDetailBusiness(id, needsCorsAnywhere) {
+
+    let yelpKey=`pm8o9ejAV8iA0lnYN8fK4lEKdh6nVH3foW1CB76vo0kVN9IK6dqv6awLhlVSWpm81FeaXAgGyEOnycrvc6HdXlPtbcQv7vC1wvOjkJ4Ei7LLrhvH-K3xQHtxafbWXXYx`; //our yelp api key
+    let finalResult
+
+    let searchURL="" //intially empty URL
+    if (needsCorsAnywhere==undefined || needsCorsAnywhere==false || needsCorsAnywhere==null) { //decides on base URL, whether we need cors-anywhere or not. appends accordingly
+        searchURL=searchURL+"https://api.yelp.com/v3/businesses/"
+    } else {
+        searchURL=searchURL+"https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/"
+    }
+    
+    searchURL=searchURL+`${id}` //appends everything.
+
+    await makeRequest() //makes function wait until end of request
+    async function makeRequest() { //actually makes request
+        await fetch(`${searchURL}`, {
+            headers: {'Authorization': 'Bearer '+ yelpKey},
+        })
+            .then(res => res.json().then(setFin))
+    }
+    async function setFin(query) { //sets finalResult after the request returns
+        finalResult = query
+    }
+    return finalResult    
+}
+
 export async function renderHelper(result) {
     const $root = $('#root');
     for (let each in result) {    
@@ -140,5 +174,7 @@ export async function setPosition(position) { //this function kicks everything o
     renderHelper(restaurants)
     let autocomplete = await yelpAutocomplete("top of",userLatitude, userLongitude, true)
     console.log(autocomplete)
+    let details = await yelpDetailBusiness("YAXz7cwaq3HArq3mHhGOhw", true)
+    console.log(details)
     //renderOneRestaurant();
 }
